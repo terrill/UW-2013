@@ -41,7 +41,7 @@
 <?php // Thin strip ?>
 
   <div id="thin-strip">
-    <div role="navigation">
+    <div role="navigation" aria-label="Global Header Menu">
       <ul>
         <li><a href="http://www.washington.edu/">UW Home</a></li>
         <li><a href="http://www.washington.edu/home/directories.html">Directories</a></li>
