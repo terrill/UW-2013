@@ -22,13 +22,13 @@ class UW_Dropdowns_Walker_Menu extends Walker_Nav_Menu
 
   function add_role_menubar($html) 
   {
-    return str_replace('class="dawgdrops-nav"', 'class="dawgdrops-nav" role="menubar"', $html);
+    return str_replace('class="dawgdrops-nav"', 'class="dawgdrops-nav" ', $html);
   }
 
   function start_lvl( &$output, $depth, $args ) 
   {
     if ( $depth > 0 ) return;
-		$output .= "<ul role=\"menu\" id=\"menu-{$this->CURRENT}\" aria-expanded=\"false\" class=\"dawgdrops-menu\">\n";
+		$output .= "<ul id=\"menu-{$this->CURRENT}\" aria-expanded=\"false\" class=\"dawgdrops-menu\">\n";
 	}
 
   function end_lvl( &$output, $depth = 0, $args = array() ) 
@@ -63,7 +63,7 @@ class UW_Dropdowns_Walker_Menu extends Walker_Nav_Menu
 		$class_names = join( ' ', apply_filters( 'nav_menu_css_class', array_filter( $classes ), $item ) );
 
     $li_classnames = ! empty($classes) ? 'class="'. $class_names .'"' : '';
-    $li_attributes = $depth == 0 ? ' role="presentation" ' : '';
+    $li_attributes = $depth == 0 ? ' ' : '';
 
 		$output .= $indent . '<li' . $li_attributes . $li_classnames .'>';
 
@@ -94,8 +94,8 @@ class UW_Dropdowns_Walker_Menu extends Walker_Nav_Menu
     $page = $pages[0];
   
     echo '<div class="dawgdrops-inner">
-      <ul id="menu-dropdowns" class="dawgdrops-nav" role="menubar">
-        <li role="presentation" class="dawgdrops-item">
+      <ul id="menu-dropdowns" class="dawgdrops-nav">
+        <li class="dawgdrops-item">
         <a href="'. get_permalink( $page->ID ) .'" class="dropdown-toggle" title="'. $page->post_title .'">' . $page->post_title . '</a>
         </li>
       </ul>
