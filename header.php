@@ -80,7 +80,6 @@
 <!--  End Temporary Fill   -->
 
   <div id="dawgdrops" aria-label="Main menu" role="navigation">
-    <h3 class="assistive-text">Main menu</h3>
     <?php uw_dropdowns(); ?>
   </div>
 
