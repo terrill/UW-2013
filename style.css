@@ -5669,6 +5669,7 @@ ul.gallery-menu li.active {
     left: 0;
     position: absolute;
     visibility: hidden;
+    display: none;
     border: none;
     border-top: 4px solid #D7A900;
     padding: 0;
