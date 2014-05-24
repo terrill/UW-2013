@@ -34,7 +34,6 @@
  * OF THE POSSIBILITY OF SUCH DAMAGE. 
  *
 */
-
 // t: current time, b: begInnIng value, c: change In value, d: duration
 jQuery.easing['jswing'] = jQuery.easing['swing'];
 
@@ -7729,9 +7728,15 @@ $(document).ready(function() {
           , $a    = $this.children( MENU_ANCHOR )
           , $ul   = $this.children( SUB_MENU )
 
+        $a
+          .attr('aria-expanded','true')
+
         $ul
           .addClass('open')
-          .attr('aria-expanded','true')
+          .attr({ 
+            'aria-expanded': 'true', 
+            'aria-hidden': 'false'
+          })
 
         if ( $ul.length !== 0 )
           $caret
@@ -7743,11 +7748,18 @@ $(document).ready(function() {
       {
 
         var $this = $(this)
+          , $a    = $this.children( MENU_ANCHOR )        
           , $ul   = $this.children( SUB_MENU )
+
+        $a
+          .attr('aria-expanded','false')
 
         $ul
           .removeClass('open')
-          .attr('aria-expanded','false')
+          .attr({ 
+            'aria-expanded': 'false', 
+            'aria-hidden': 'true'
+          })
 
         $caret.stop().hide()
                   
@@ -7774,9 +7786,15 @@ $(document).ready(function() {
           .removeClass('open')
           .attr('aria-expaned', 'false')
 
+        $a
+          .attr('aria-expanded','true')
+
         $ul
           .addClass('open')
-          .attr('aria-expanded','true')
+          .attr({ 
+            'aria-expanded': 'true', 
+            'aria-hidden': 'false'
+          })
 
         if ( $ul.length !== 0 )
           $caret
@@ -7813,7 +7831,7 @@ $(document).ready(function() {
           spacebar : 32
       } 
     , clearMenus = function() {
-      $submenus.removeClass('open').attr('aria-expanded','false')
+      $submenus.removeClass('open').attr({'aria-expanded':'false','aria-hidden':'true'})
       $caret.hide();
     }, index;
 
@@ -7897,7 +7915,10 @@ $(document).ready(function() {
       
             $ul
               .addClass('open')
-              .attr('aria-expanded','true')
+              .attr({ 
+                'aria-expanded': 'true', 
+                'aria-hidden': 'false'
+              })
 
             // [TODO] settimeout wasn't necessary last time. 
             setTimeout(function() {

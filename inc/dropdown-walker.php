@@ -17,18 +17,27 @@ class UW_Dropdowns_Walker_Menu extends Walker_Nav_Menu
     if ( ! wp_get_nav_menu_object( $menuLocations['primary']))
       $this->initial_dropdowns();
       
-    add_filter('wp_nav_menu', array($this, 'add_role_menubar'));
+    add_filter('wp_nav_menu', array($this, 'add_role_application'));
+    
 	}
 
-  function add_role_menubar($html) 
+  function add_role_application($html) 
   {
-    return str_replace('class="dawgdrops-nav"', 'class="dawgdrops-nav" ', $html);
+    $newAttribs = 'class="dawgdrops-inner" ';
+    $newAttribs .= 'role="application" ';
+    $newAttribs .= 'aria-label="Keyboard-accessible Menu"';
+    return str_replace('class="dawgdrops-inner"', $newAttribs, $html); 
   }
 
   function start_lvl( &$output, $depth, $args ) 
   {
     if ( $depth > 0 ) return;
-		$output .= "<ul id=\"menu-{$this->CURRENT}\" aria-expanded=\"false\" class=\"dawgdrops-menu\">\n";
+		$output .= "<ul id=\"menu-{$this->CURRENT}\" ";
+		$output .= "aria-expanded=\"false\" ";
+		$output .= "role=\"group\" ";
+    $output .= "aria-hidden=\"true\" ";
+		$output .= "aria-labelledby=\"link-{$this->CURRENT}\" ";
+		$output .= "class=\"dawgdrops-menu\">\n";
 	}
 
   function end_lvl( &$output, $depth = 0, $args = array() ) 
@@ -55,7 +64,6 @@ class UW_Dropdowns_Walker_Menu extends Walker_Nav_Menu
     $title = ! empty( $item->title ) ? $item->title : $item->post_title;
     
     $caret  = $depth == 0 && $item->has_children ? '<b class="caret"></b>' : '';
-    $controls = $depth == 0 && $item->has_children ? 'aria-controls="menu-'.$item->post_name.'"' : '';
 
 		$indent = ( $depth ) ? str_repeat( "\t", $depth ) : '';
 
@@ -67,14 +75,20 @@ class UW_Dropdowns_Walker_Menu extends Walker_Nav_Menu
 
 		$output .= $indent . '<li' . $li_attributes . $li_classnames .'>';
 
-		$attributes  = ! empty( $item->attr_title ) ? ' title="'  . esc_attr( $item->attr_title ) .'"' : '';
+		//$attributes  = ! empty( $item->attr_title ) ? ' title="'  . esc_attr( $item->attr_title ) .'"' : '';
 		$attributes .= ! empty( $item->target )     ? ' target="' . esc_attr( $item->target     ) .'"' : '';
 		$attributes .= ! empty( $item->xfn )        ? ' rel="'    . esc_attr( $item->xfn        ) .'"' : '';
 		$attributes .= ! empty( $item->url )        ? ' href="'   . esc_attr( $item->url        ) .'"' : '';
-		$attributes .=   $depth == 0                ? ' class="dropdown-toggle"' : '';
-		$attributes .=   $depth == 1                ? ' tabindex="-1" '                                : '';
-		$attributes .=  ' title="'. $title .'" ';
-    $attributes .= $controls;
+    if ($depth == 0 && $item->has_children) {
+  		$attributes .= ' class="dropdown-toggle"';
+      $attributes .= ' id="link-'.$item->post_name.'"'; 
+      $attributes .= ' aria-controls="menu-'.$item->post_name.'"'; 
+      $attributes .= ' aria-haspopup="true"'; 
+      $attributes .= ' aria-expanded="false" '; 		  		
+    }
+    else if ($depth == 1) { 
+      // $attributes .= ' tabindex="-1"';
+    }
 
 		$item_output = $args->before;
 		$item_output .= '<a'. $attributes .'>';
@@ -92,7 +106,7 @@ class UW_Dropdowns_Walker_Menu extends Walker_Nav_Menu
 
     $pages = get_pages('number=1');
     $page = $pages[0];
-  
+
     echo '<div class="dawgdrops-inner">
       <ul id="menu-dropdowns" class="dawgdrops-nav">
         <li class="dawgdrops-item">
@@ -100,6 +114,5 @@ class UW_Dropdowns_Walker_Menu extends Walker_Nav_Menu
         </li>
       </ul>
     </div>';
-
   }
 }
